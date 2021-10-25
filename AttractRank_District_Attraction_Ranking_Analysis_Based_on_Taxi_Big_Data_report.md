@@ -29,23 +29,13 @@
 ![](./images/微信图片_20211024220559.png)
 
 ##### 吸引力值的计算（AttractRank算法）
-* 关键公式：计算地区u的吸引力值AR(u)
-$$
-\begin{array}{l}
-A R(u)=\sum_{v \in \mathcal{N}} A R(v) \times P(v, u) \\
-\\ \text { s.t. } \sum_{i \in \mathcal{N}} A R(i)=\sum_{j \in \mathcal{N}} \sum_{k \in \mathcal{N}} O D_{j, k}
-\end{array}
-$$
+* 关键公式：
+计算地区u的吸引力值AR(u)
+
+![](./images/截屏2021-10-25 上午11.31.18.png)
+
 其中
-$$
-\begin{array}{l}
-P_{v, u}= \\
-\left\{\begin{array}{ll}
-\frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)} & \text { if } \sum_{w \in \mathcal{N}} O D_{v, w}=0 \\
-(1-r) \frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)}+r \cdot \frac{O D_{v, u}}{\sum_{w \in \mathcal{N}} O D_{v, w}} & \text { otherwise }
-\end{array}\right.
-\end{array}
-$$
+![](./images/截屏2021-10-25 上午11.31.26.png)
 
 为从地区v到地区u的出行概率（转移概率）:
 
