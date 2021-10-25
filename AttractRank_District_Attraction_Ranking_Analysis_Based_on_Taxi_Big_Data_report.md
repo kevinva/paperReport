@@ -33,7 +33,7 @@
 $$
 \begin{array}{l}
 A R(u)=\sum_{v \in \mathcal{N}} A R(v) \times P(v, u) \\
-\text { s.t. } \sum_{i \in \mathcal{N}} A R(i)=\sum_{j \in \mathcal{N}} \sum_{k \in \mathcal{N}} O D_{j, k}
+\\ \text { s.t. } \sum_{i \in \mathcal{N}} A R(i)=\sum_{j \in \mathcal{N}} \sum_{k \in \mathcal{N}} O D_{j, k}
 \end{array}
 $$
 其中
