@@ -37,8 +37,15 @@ A R(u)=\sum_{v \in \mathcal{N}} A R(v) \times P(v, u) \\
 \end{array}
 $$
 其中
-$P_{v, u}=$
-$\left\{\begin{array}{ll}\frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)} & \text { if } \sum_{w \in \mathcal{N}} O D_{v, w}=0 \\ (1-r) \frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)}+r \cdot \frac{O D_{v, u}}{\sum_{w \in \mathcal{N}} O D_{v, w}} & \text { otherwise }\end{array}\right.$
+$$
+\begin{array}{l}
+P_{v, u}= \\
+\left\{\begin{array}{ll}
+\frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)} & \text { if } \sum_{w \in \mathcal{N}} O D_{v, w}=0 \\
+(1-r) \frac{G(v, u)}{\sum_{w \in \mathcal{N}} G(v, w)}+r \cdot \frac{O D_{v, u}}{\sum_{w \in \mathcal{N}} O D_{v, w}} & \text { otherwise }
+\end{array}\right.
+\end{array}
+$$
 
 为从地区v到地区u的出行概率（转移概率）:
 
