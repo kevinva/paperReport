@@ -1,4 +1,4 @@
-## 《AttractRank: District Attraction Ranking Analysis B ased on Taxi Big Data》
+## 《AttractRank: District Attraction Ranking Analysis B ased on Taxi Big Data》阅读报告
 
 ### 当前现状
 传统的城市规划方法大都基于改地区的GDP，就业率，人口密度，调查问卷等等。然而随着城市数据的爆炸式增长，以上这些信息的信息量相对较少。当前已经有一些基于PageRank的扩展方法，如 Geographic PageRank，但它们没有充分利用OD信息（origin-destination，出发地-目的地的数据对），计算出来的地区排名信息只独立代表一个地区的吸引力而忽视地区间的相互影响。
