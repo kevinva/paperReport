@@ -35,6 +35,7 @@
 ![](./images/ar_1.png)
 
 其中
+
 ![](./images/ar_2.png)
 
 为从地区v到地区u的出行概率（转移概率）:
@@ -47,7 +48,9 @@ G(v, u)=\frac{1}{D_{v, u}}
 $$
 
 
-由此，可以得到一系列的关于AR(地区1)，AR(地区2)，..., AR(地区n)的方程，再结合约束条件：$\sum_{i \in \mathcal{N}} A R(i)=\sum_{j \in \mathcal{N}} \sum_{k \in \mathcal{N}} O D_{j, k}$，解此方程组，即可得每个AR的值：
+由此，可以得到一系列的关于AR(地区1)，AR(地区2)，..., AR(地区n)的方程，再结合约束条件：
+$\sum_{i \in \mathcal{N}} A R(i)=\sum_{j \in \mathcal{N}} \sum_{k \in \mathcal{N}} O D_{j, k}$
+，解此方程组，即可得每个AR的值：
 
 ![](./images/微信图片_20211024223130.png)
 
@@ -59,6 +62,7 @@ $$
 ### 结论
 ##### AttractRank是存在并且唯一
 作者利用了马尔科夫链的一个重要理论：对于非周期、不可约、正常返的马尔可夫链极限分布就是该马尔可夫链的唯一平稳分布，说明计算出来的AR值向量是收敛的：
+
 $\pi_{A R}=\left(\sum_{i \in N} \sum_{j \in \mathcal{N}} O D_{i, j}\right) \pi_{u}$，
 其中，$\pi_{A R}$是AR吸引力值的向量，$\pi_{u}$是其平稳状态
 
