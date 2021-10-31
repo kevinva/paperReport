@@ -77,7 +77,7 @@ $p\left(s_{t, i}=1 \mid s_{j<t}, \mathbf{a}\right)=\alpha_{t, i}$
 
 那么，向量z可以这样求：
 
-\hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}
+$\hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}$
 
 之后的训练使用极大似然估计，然而真实分布$p(\mathbf{y} \mid \mathbf{a})$并不知道（只有训练样本点的分布$\left.p\left(\mathbf{y}_{t} \mid \mathbf{a}, \mathbf{y}_{1}, \ldots, \mathbf{y}_{t-1}\right)\right)$），于是采用了变分自编码器(VAE)的思路。由于已知$s_{t}$，故将其作为隐变量，得到分布$p(\mathbf{y} \mid \mathbf{a})$对数似然函数的变分下界：
 
