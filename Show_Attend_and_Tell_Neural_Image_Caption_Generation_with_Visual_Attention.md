@@ -16,7 +16,7 @@
 
 ### 研究方法
 
-##### encoder
+#### encoder
 
 句子摘要以一个K维序列表示：
 
@@ -28,7 +28,7 @@ $a=\left\{\mathbf{a}_{1}, \ldots, \mathbf{a}_{L}\right\}, \mathbf{a}_{i} \in \ma
 
 区别于多数CNN提取特征最后一层使用全连接层，作者使用low-level的卷积层代替全连接层。那么，decoder可以通过选择所输入的特征向量的一部分，找到对应的图像的一部分。注意力就是这么来的。
 
-##### decoder
+#### decoder
 
 decoder使用了LSTM，基于上下文向量一个个单词的生成摘要。相比传统LSTM的输入，它多了一个$\hat{\mathbf{z}} \in \mathbb{R}^{D}$向量，如图：
 
@@ -69,7 +69,7 @@ $p\left(\mathbf{y}_{t} \mid \mathbf{a}, \mathbf{y}_{1}^{t-1}\right) \propto \exp
 其中，$\mathbf{L}_{o} \in \mathbb{R}^{K \times m}, \mathbf{L}_{h} \in \mathbb{R}^{m \times n}, \mathbf{L}_{z} \in \mathbb{R}^{m \times D}$
 
 
-##### 随机 hard attention
+#### 随机 hard attention
 
 hard机制引入一个0-1位置变量$s_{t, i}$，t表示每一个时刻t，当第i个位置（从L个像素中）确是用来提取出图像特征，则为1，求法为：
 
@@ -77,7 +77,7 @@ $p\left(s_{t, i}=1 \mid s_{j<t}, \mathbf{a}\right)=\alpha_{t, i}$
 
 那么，向量z可以这样求：
 
-$\hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}$
+\hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}
 
 之后的训练使用极大似然估计，然而真实分布$p(\mathbf{y} \mid \mathbf{a})$并不知道（只有训练样本点的分布$\left.p\left(\mathbf{y}_{t} \mid \mathbf{a}, \mathbf{y}_{1}, \ldots, \mathbf{y}_{t-1}\right)\right)$），于是采用了变分自编码器(VAE)的思路。由于已知$s_{t}$，故将其作为隐变量，得到分布$p(\mathbf{y} \mid \mathbf{a})$对数似然函数的变分下界：
 
@@ -106,7 +106,7 @@ $\frac{\partial L_{s}}{\partial W} \approx \frac{1}{N} \sum_{n=1}^{N}\left[\frac
 
 其中$\lambda_r$和$\lambda_e$是两个超参数。
 
-##### 确定性 soft attention
+#### 确定性 soft attention
 
 soft机制直接对每个$a_i$加权得到z:
 
@@ -145,4 +145,3 @@ $L_{d}=-\log (P(\mathbf{y} \mid \mathbf{x}))+\lambda \sum_{i}^{L}\left(1-\sum_{t
 
 附：
 * 论文链接：[https://arxiv.org/pdf/1502.03044.pdf](https://arxiv.org/pdf/1502.03044.pdf)
-
