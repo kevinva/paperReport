@@ -20,7 +20,7 @@
 
 句子摘要以一个K维序列表示：
 
-$y=\left\{\mathbf{y}_{1}, \ldots, \mathbf{y}_{C}\right\}, \mathbf{y}_{i} \in \mathbb{R}^{K}$
+$$y=\left\{\mathbf{y}_{1}, \ldots, \mathbf{y}_{C}\right\}, \mathbf{y}_{i} \in \mathbb{R}^{K}$$
 
 使用CNN提取L个D维的标记向量，每个向量对应图像的一个区域：
 
