@@ -86,3 +86,8 @@ $$
 1. 使用贝叶斯模型Merging。
 2. 增加更多的头部特征信息，譬如单词的位置信息。
 3. 为内部状态建模，以便更好的挖掘到状态前后的若干个单词信息。
+
+
+
+附：
+* 论文链接：[https://www.aaai.org/Papers/Workshops/1999/WS-99-11/WS99-11-007.pdf](https://www.aaai.org/Papers/Workshops/1999/WS-99-11/WS99-11-007.pdf)
