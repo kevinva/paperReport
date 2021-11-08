@@ -30,7 +30,12 @@
 
 $$
 \begin{aligned}
-\hat{\mathrm{P}}\left(q \rightarrow q^{\prime}\right) &=\frac{c\left(q \rightarrow q^{\prime}\right)}{\sum_{s \in Q} c(q \rightarrow s)} \\
+\hat{\mathrm{P}}\left(q \rightarrow q^{\prime}\right) &=\frac{c\left(q \rightarrow q^{\prime}\right)}{\sum_{s \in Q} c(q \rightarrow s)}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \hat{\mathrm{P}}(q \uparrow \sigma) &=\frac{c(q \uparrow \sigma)}{\sum_{\rho \in \mathcal{D}} c(q \uparrow \rho)}
 \end{aligned}
 $$
