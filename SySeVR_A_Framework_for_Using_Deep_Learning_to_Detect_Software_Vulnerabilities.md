@@ -90,7 +90,21 @@ void func()
 
 ![./images/2/1639216946265.jpg](./images/2/1639216946265.jpg)
 
+* step1：已函数/API为单位生成PDG，已有标准的算法可生成PDG，具体可参考文献：[https://www.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/ferrante87jul.pdf](https://www.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/ferrante87jul.pdf)
+
+* step2：以SyVC为”中心“，划分interprocedural forward slice和interprocedural backward slice（有哪个就划分哪个），并且每个切片可保留数据流、控制流、数据流和控制流的连接（如图中的interprocedural backward slice就只保留数据流连接），最终会导致生成的SeVC数量不同。
+这里生成后向切片：7->9->10->11->13->14->16->18->22->23->24->25
+和前向切片：25->26->1->3->4
+
+* step3: 删除重复节点，整合两个切片为一个完整的程序切片，该切片即为SeVC。可见程序切片不一定是连续的程序语句。
+
 3. 将SeVC编码为向量
+
+操作跟VulDeepecker的类似：去掉非ASCII字符，将用户自定义的变量、用户自定义的函数转换为对应的特征符号VAR1，VAR2，FUN1，FUN2，等，将SeVC转换为符号表示。
+（这里作者也提到了不同的SeVC可能会导致相同的符号表示问题。而且也交代了符号的划分是根据一定的语法分析，具体是什么也没提）
+
+然后用word2vec，将这种符号特征一起参与训练，最后编码为向量。
+
 
 4. 模型训练与预测
 
