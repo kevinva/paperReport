@@ -31,13 +31,13 @@ word2vec，doc2vec的出现
 
 * 为了限制训练数据的规模（不要过大）和减少数据的稀疏性，引入两个超参：path的最大长度和具有相同父结点的两个孩子结点序号的最大差值（path两端点的“宽度”）
 
-* path-context其实由三个表示为一个三元组（x_s, p_j, x_t）
+* path-context其实由三个元素表示的一个三元组（x_s, p_j, x_t）
 
 #### 模型架构
 
 ![./images/3/1641125732109.jpg](./images/3/1641125732109.jpg)
 
-1.将（x_s, p_j, x_t）三个向量（每个context vector, 大小1xd）拼接为一个一个（1x3d）的向量，输入全连接层，将其信息“压缩”为1xd向量(combined context vector)。
+1.将（x_s, p_j, x_t）三个向量（每个context vector, 大小1xd）拼接为一个（1x3d）的向量，输入全连接层，将其信息“压缩”为1xd向量(combined context vector)。
 
 ![./images/3/1641126144473.jpg](./images/3/1641126144473.jpg)
 
@@ -107,7 +107,7 @@ word2vec，doc2vec的出现
 
 ### 启发
 
-1. 多个维度的“压缩”信息
+1. 用多个维度“压缩”信息
 2. 利用注意力生成代码向量
 3. 注意力的可解析性（path-context的粗细）
 
