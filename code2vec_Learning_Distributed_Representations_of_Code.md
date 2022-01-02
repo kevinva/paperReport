@@ -8,7 +8,7 @@ word2vec，doc2vec的出现
 
 主要: 学习code embedding
 
-具体来说，将函数编码，预测其函数名（跟代码变摘要有点像），有次学习得"副产品"code embedding
+具体来说，将函数编码，预测其函数名（跟代码变摘要有点像），由此学习得"副产品"code embedding
 
 ![./images/3/1641102403348.jpg](./images/3/1641102403348.jpg)
 
