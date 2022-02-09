@@ -14,10 +14,10 @@
 本文的任务：
 
 1. 提出一个生成代码的新新方案：AlphaCode，使用大型transformer模型，用GitHub上的代码pre-train，然后在精选过的编程竞赛问题上fine-tuning，总体流程如下：
-![./images/9/1644312267351.jpg](./images/9/1644312267351.jpg)
+![../images/9/1644312267351.jpg](../images/9/1644312267351.jpg)
 
 2. 发布新的关于编程竞赛数据集CodeContests，用于模型训练：
-![./images/9/ak6y8-oxno8.jpeg](./images/9/ak6y8-oxno8.jpeg)
+![../images/9/ak6y8-oxno8.jpeg](../images/9/ak6y8-oxno8.jpeg)
 
 3. 证明本文生成代码的方法并非直接复制训练集的代码片段，而是根据自然语言描述生成的。
 

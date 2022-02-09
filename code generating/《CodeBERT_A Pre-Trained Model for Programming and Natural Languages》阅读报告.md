@@ -16,7 +16,7 @@
 * 在预训练阶段，模型输入为一个NL-PL对：一个是自然语言文本，视为单词的序列，拆分为WordPiece。另一部分为程序代码，看做Token的序列。拼接成Bert要求的方式：[CLS], w1, w2, w3, ..., wn, [SEP], c1, c2, c3, ..., cm, [EOS]（w为自然语言单词，c为程序token）。
 
 例子：
-![./images/8/1643895632888.jpg](./images/8/1643895632888.jpg)
+![../images/8/1643895632888.jpg](../images/8/1643895632888.jpg)
 
 其中红色框为自然语言文本部分。
 
@@ -61,11 +61,11 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 
 给定一段自然语言作为输入，代码搜索的目标是从一组代码中找到语义上最相关的代码，如：
 
-![./images/8/1643897435001.jpg](./images/8/1643897435001.jpg)
+![../images/8/1643897435001.jpg](../images/8/1643897435001.jpg)
 
 各模型的MRR(Mean Reciprocal Rank)对比如下：
 
-![./images/8/1643897697795.jpg](./images/8/1643897697795.jpg)
+![../images/8/1643897697795.jpg](../images/8/1643897697795.jpg)
 
 
 
@@ -75,11 +75,11 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 
 给定NL-PL对，NL-PL Probing的目标是测试模型的正确预测能力。模型精确度(正确预测实例的数量与全部实例数量的比例)比较结果如下：
 
-![./images/8/1643897996571.jpg](./images/8/1643897996571.jpg)
+![../images/8/1643897996571.jpg](../images/8/1643897996571.jpg)
 
 也可以用一个具体的案例来对比下。下图案例中分别掩盖了NL和PL中的“min”:
 
-![./images/8/1643898428187.jpg](./images/8/1643898428187.jpg)
+![../images/8/1643898428187.jpg](../images/8/1643898428187.jpg)
 
 对比RoBerta与CodeBert预测该位置为“min”的精确率有显著提升：
 
@@ -88,7 +88,7 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 
 这部分研究代码到文档的生成问题，并在六种编程语言中对比了生成任务在CodeSearchNet数据集上的结果。作者采用了各种预训练的模型作为编码器，并保持了超参数的一致性。各模型的BLEU-4分属于如下：
 
-![./images/8/1643898593119.jpg](./images/8/1643898593119.jpg)
+![../images/8/1643898593119.jpg](../images/8/1643898593119.jpg)
 
 
 
@@ -97,7 +97,7 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 
 本文的CodeBert只在Python、JavaScript、Java、Ruby、PHP、Go这些语言上做预训练，而本实验的在C#语言上（不是上面6中预训练用的编程语言）进行摘要生成，BLEU-4分数如下：
 
-![./images/8/1643898764090.jpg](./images/8/1643898764090.jpg)
+![../images/8/1643898764090.jpg](../images/8/1643898764090.jpg)
 
 说明CodeBERT能够更好地推广到其他编程语言。但模型的效果略低于code2seq，作者认为原因可能是code2seq融入了抽象语法树AST中的表示，而CodeBERT仅将原始代码作为输入，所以CodeBERT在组合AST的语义上还有待研究。
 
