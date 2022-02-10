@@ -88,28 +88,23 @@ encoder输入为问题的自然语言描述，而解题的代码用于decoder。
 
 1. Tempering:
 ```
-Tempering, introduced by Dabre and Fujita (2020)([ Softmax tempering for training neural machine translation models.](https://arxiv.org/pdf/2009.09372.pdf)), is a regularization technique that
-makes the token probability distribution artificially smoother or sharper at training time by dividing
+Tempering, introduced by Dabre and Fujita (2020)([ Softmax tempering for training neural machine translation models.](https://arxiv.org/pdf/2009.09372.pdf)), is a regularization technique that makes the token probability distribution artificially smoother or sharper at training time by dividing
 the output logits of a model by a scalar temperature 푇 before the softmax layer
 ```
 
-2. Value conditioning & prediction (强化学习)
+2. Value conditioning & prediction
 
-数据集包含一道问题正确和错误的提交，本文使用Value conditioning & prediction区分这两类的提交。
+数据集包含一道问题的正确和错误的提交，本文使用Value conditioning & prediction区分这两类的提交。
 
 在Value conditioning阶段，在问题描述中插入这个提交是否正确的信息，如下：
 
 ![../images/9/1644500206736.jpg](../images/9/1644500206736.jpg)
 
-那么，在采样阶段，模型就总会采样到正确的sample。
+那么，在采样阶段，模型就总会采样到正确的sample了。
 
-而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在一个小型的transformer中也可以使用最后一层token表示来分类这个提交正确与否：
+而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在transformer中的最后一层输出也可以用来区分这个代码的提交正确与否：
 ```
-we added an auxiliary value prediction
-11
-Competition-Level Code Generation with AlphaCode
-task during training such that the last layer token representations before projecting to logits are also
-used in a small Transformer to classify whether the submission is correct.
+we added an auxiliary value prediction task during training such that the last layer token representations before projecting to logits are also used in a small Transformer to classify whether the submission is correct.
 ```
 
 
