@@ -49,7 +49,80 @@
 
 2. 为了防止数据“泄漏”（将训练集用于模型测试），本文对整个数据作了如下划分：所有训练集都在GitHub提交的日期2021/07/14或其之前；验证集的提交在2021/07/15至2021/09/20期间；测试集的提交2021/09/21之后
 
+* 模型架构
+
+1. 基于seq2seq架构，对条件概率建模$p(Y | X)$，其中X为编程问题的描述（encoder的输入），Y为自回归的输出一个个代码token(decoder的输出)。
+
+    ![../images/9/1644499579099.jpg](../images/9/1644499579099.jpg)
+
+    本文还发现：使用浅层的encoder(层数少)和深层的decoder（层数多）的搭配可以极大改善模型的性能。
+各种模型配置如下：
+
+    ![../images/9/1644497004599.jpg](../images/9/1644497004599.jpg)
+
+2. 使用JAX、Haiku工具建立模型
+
+3. 使用multi-query attention：每个attention block使用全量的query heads，而key和value heads只使用一部分（共享key和value heads），这样可以减少内存和cache的使用，提高sampling的效率。
+
+4. tokenize：使用SentencePiece tokenizer方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
+
+* Pre-training
+
+使用GitHub的代码进行预训练。
+
+encoder使用masked language modeling
+decoder使用标准的交叉熵损失预测下一个token
+
+将GitHub代码文件均匀切分为两部分，前半部分作为encoder的输入，后半部分用于decoder
+
+* Fine-tuning
+
+使用自身CodeContests数据进行模型微调。
+
+同样，encoder使用masked language modeling
+decoder使用标准的交叉熵损失预测下一个token。
+
+encoder输入为问题的自然语言描述，而解题的代码用于decoder。
+
+另外，本文还使用了以下技术作为改进：
+
+1. Tempering:
+```
+Tempering, introduced by Dabre and Fujita (2020)([ Softmax tempering for training neural machine translation models.](https://arxiv.org/pdf/2009.09372.pdf)), is a regularization technique that
+makes the token probability distribution artificially smoother or sharper at training time by dividing
+the output logits of a model by a scalar temperature 푇 before the softmax layer
+```
+
+2. Value conditioning & prediction
+
+数据集包含一道问题正确和错误的提交，本文使用Value conditioning & prediction区分这两类的提交。
+
+在Value conditioning阶段，在问题描述中插入这个提交是否正确的信息，如下：
+
+![../images/9/1644500206736.jpg](../images/9/1644500206736.jpg)
+
+那么，在采样阶段，模型就总会采样到正确的sample。
+
+而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在一个小型的transformer中也可以使用最后一层token表示来分类这个提交正确与否：
+```
+we added an auxiliary value prediction
+11
+Competition-Level Code Generation with AlphaCode
+task during training such that the last layer token representations before projecting to logits are also
+used in a small Transformer to classify whether the submission is correct.
+```
+
+
+3. GOLD
+(to be continue...)
+
 ### 研究结论
+
+
+### 启示
+
+1. multi-query attention对transformer计算性能的影响
+2.  
 
 
 ### 附：
