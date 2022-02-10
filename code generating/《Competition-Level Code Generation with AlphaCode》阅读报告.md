@@ -62,9 +62,9 @@
 
 2. 使用JAX、Haiku工具建立模型
 
-3. 使用multi-query attention：每个attention block使用全量的query heads，而key和value heads只使用一部分（共享key和value heads），这样可以减少内存和cache的使用，提高sampling的效率。
+3. 使用multi-query attention（hoho_todo）：每个attention block使用全量的query heads，而key和value heads只使用一部分（共享key和value heads），这样可以减少内存和cache的使用，提高sampling的效率。
 
-4. tokenize：使用SentencePiece tokenizer方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
+4. tokenize：使用SentencePiece tokenizer（hoho_todo）方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
 
 * Pre-training
 
@@ -86,7 +86,7 @@ encoder输入为问题的自然语言描述，而解题的代码用于decoder。
 
 另外，本文还使用了以下技术作为改进：
 
-1. Tempering:
+1. Tempering（hoho_todo）:
 ```
 Tempering, introduced by Dabre and Fujita (2020)([ Softmax tempering for training neural machine translation models.](https://arxiv.org/pdf/2009.09372.pdf)), is a regularization technique that makes the token probability distribution artificially smoother or sharper at training time by dividing
 the output logits of a model by a scalar temperature 푇 before the softmax layer
@@ -108,7 +108,7 @@ we added an auxiliary value prediction task during training such that the last l
 ```
 
 
-3. GOLD
+3. GOLD(hoho_todo)
 (to be continue...)
 
 ### 研究结论
