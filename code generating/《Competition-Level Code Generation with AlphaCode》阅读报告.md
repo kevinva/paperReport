@@ -102,7 +102,7 @@ the output logits of a model by a scalar temperature 푇 before the softmax laye
 
 那么，在采样阶段，模型就总会采样到正确的sample了。
 
-而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在transformer中的最后一层输出也可以用来区分这个代码的提交正确与否：
+而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在transformer中的最后一层输出也可以用来区分这个代码提交的正确与否：
 ```
 we added an auxiliary value prediction task during training such that the last layer token representations before projecting to logits are also used in a small Transformer to classify whether the submission is correct.
 ```
