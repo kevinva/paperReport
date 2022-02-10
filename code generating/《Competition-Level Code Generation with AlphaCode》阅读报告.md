@@ -93,7 +93,7 @@ makes the token probability distribution artificially smoother or sharper at tra
 the output logits of a model by a scalar temperature 푇 before the softmax layer
 ```
 
-2. Value conditioning & prediction
+2. Value conditioning & prediction (强化学习)
 
 数据集包含一道问题正确和错误的提交，本文使用Value conditioning & prediction区分这两类的提交。
 
