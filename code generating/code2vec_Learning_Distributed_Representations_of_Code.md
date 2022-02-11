@@ -10,7 +10,7 @@ word2vec，doc2vec的出现
 
 具体来说，将函数编码，预测其函数名（跟代码变摘要有点像），由此学习得"副产品"code embedding
 
-![./images/3/1641102403348.jpg](./images/3/1641102403348.jpg)
+![../images/3/1641102403348.jpg](../images/3/1641102403348.jpg)
 
 ### 研究方法
 
@@ -21,11 +21,11 @@ word2vec，doc2vec的出现
 
 如有：
 
-![./images/3/1641103015118.jpg/](./images/3/1641103015118.jpg)
+![../images/3/1641103015118.jpg/](../images/3/1641103015118.jpg)
 
 形成一个path-contexts集：
 
-![./images/3/1641103128211.jpg](./images/3/1641103128211.jpg)
+![../images/3/1641103128211.jpg](../images/3/1641103128211.jpg)
 
 * ↑表示结点沿AST路径向上， ↓则沿路径向下
 
@@ -35,11 +35,11 @@ word2vec，doc2vec的出现
 
 #### 模型架构
 
-![./images/3/1641125732109.jpg](./images/3/1641125732109.jpg)
+![../images/3/1641125732109.jpg](../images/3/1641125732109.jpg)
 
 1.将（x_s, p_j, x_t）三个向量（每个context vector, 大小1xd）拼接为一个（1x3d）的向量，输入全连接层，将其信息“压缩”为1xd向量(combined context vector)。
 
-![./images/3/1641126144473.jpg](./images/3/1641126144473.jpg)
+![../images/3/1641126144473.jpg](../images/3/1641126144473.jpg)
 
 “This combination allows the model the expressivity of giving a certain path more attention when observed with certain values and less attention when the exact same path is observed with other value。”
 
@@ -48,50 +48,50 @@ word2vec，doc2vec的出现
 
 利用Attention机制：声明全局的注意力向量a，将每个path-context组合后的向量与a点积，赋予每个path-context对于这段代码特定的关注度（权重），该全局注意力向量也一起参与学习。
 
-![./images/3/1641126202179.jpg](./images/3/1641126202179.jpg)
+![../images/3/1641126202179.jpg](../images/3/1641126202179.jpg)
 
-![./images/3/1641126286653.jpg](./images/3/1641126286653.jpg)
+![../images/3/1641126286653.jpg](../images/3/1641126286653.jpg)
 
 3. tag名（标注，函数名）也作embedding（y vector）,code vector与每个y vector做softmax，计算概率大小：
 
-![./images/3/1641126592373.jpg](./images/3/1641126592373.jpg)
+![../images/3/1641126592373.jpg](../images/3/1641126592373.jpg)
 
 4. 损失函数：交叉熵
 
-![./images/3/1641126699128.jpg](./images/3/1641126699128.jpg)
+![../images/3/1641126699128.jpg](../images/3/1641126699128.jpg)
 
 
 ### 结论
 
 1. 
-![./images/3/1641127336557.jpg](./images/3/1641127336557.jpg)
+![../images/3/1641127336557.jpg](../images/3/1641127336557.jpg)
 
 2. 
-![./images/3/1641127463530.jpg](./images/3/1641127463530.jpg)
+![../images/3/1641127463530.jpg](../images/3/1641127463530.jpg)
 
 * Hard attention: 在与注意力向量点积后，只选取权值最高的combined context vector作为最终的code vector
 
 * Element-wise soft attention: 使用d个全局注意力向量（d个数跟combined context vector维度相同）（感觉这里有点像transformer多头注意力的操作）
 
-![./images/3/1641127652146.jpg](./images/3/1641127652146.jpg)
+![../images/3/1641127652146.jpg](../images/3/1641127652146.jpg)
 
 3. 注意力的可解析性（path-context的粗细）
 
-![./images/3/1641128099285.jpg](./images/3/1641128099285.jpg)
+![../images/3/1641128099285.jpg](../images/3/1641128099285.jpg)
 
 4. code embedding的可解析性
 
 * 语义的相似性
 
-![./images/3/1641128242087.jpg](./images/3/1641128242087.jpg)
+![../images/3/1641128242087.jpg](../images/3/1641128242087.jpg)
 
 * 语义的可组合性
 
-![./images/3/1641128205067.jpg](./images/3/1641128205067.jpg)
+![../images/3/1641128205067.jpg](../images/3/1641128205067.jpg)
 
 * 语义的可类比性
 
-![./images/3/1641128216901.jpg](./images/3/1641128216901.jpg)
+![../images/3/1641128216901.jpg](../images/3/1641128216901.jpg)
 
 
 ### 研究不足

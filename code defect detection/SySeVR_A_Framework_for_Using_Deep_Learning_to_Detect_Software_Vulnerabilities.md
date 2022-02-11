@@ -24,11 +24,11 @@
 
 受由图像识别中候选区域概念(region proposal)的启发，流程概览：
 
-![./images/2/1639206985335.jpg](./images/2/1639206985335.jpg)
+![../images/2/1639206985335.jpg](../images/2/1639206985335.jpg)
 
 具体到漏洞检测：
 
-![./images/2/1639207025301.jpg](./images/2/1639207025301.jpg)
+![../images/2/1639207025301.jpg](../images/2/1639207025301.jpg)
 
 整个系统是基于一个个函数/API实现进行的。
 
@@ -57,7 +57,7 @@ void func()
 ```
 
 可对应如下AST:
-![./images/2/1639215168867.jpg](./images/2/1639215168867.jpg)
+![../images/2/1639215168867.jpg](../images/2/1639215168867.jpg)
 
 发现根据AU的匹配规则：
 (i). 结点是一个IdentifierDeclStatement结点下的identifier
@@ -68,7 +68,7 @@ void func()
 
 ========================
 回顾AST:
-![./images/2/hoho2.jpg](./images/2/hoho.jpg)
+![../images/2/hoho2.jpg](../images/2/hoho.jpg)
 *(from: [https://code2vec.org/](https://code2vec.org/))*
 
 ========================
@@ -88,7 +88,7 @@ void func()
 
 具体流程如下图：
 
-![./images/2/1639216946265.jpg](./images/2/1639216946265.jpg)
+![../images/2/1639216946265.jpg](../images/2/1639216946265.jpg)
 
 * step1：已函数/API为单位生成PDG，已有标准的算法可生成PDG，具体可参考文献：[https://www.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/ferrante87jul.pdf](https://www.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/ferrante87jul.pdf)
 
@@ -117,7 +117,7 @@ void func()
 
 本文作者主要使用GiGRU：
 
-![./images/2/1639210145244.jpg](./images/2/1639210145244.jpg)
+![../images/2/1639210145244.jpg](../images/2/1639210145244.jpg)
 
 ### 研究结论
 
@@ -125,24 +125,24 @@ void func()
 
 1. 该系统能识别多类漏洞，且表现优于VulDeepecker：
 
-![./images/2/1639270926039.jpg](./images/2/1639270926039.jpg)
+![../images/2/1639270926039.jpg](../images/2/1639270926039.jpg)
 
 2. 不依赖于特定的学习算法，但每个算法得到的效果有差异：
 
-![./images/2/1639271021938.jpg](./images/2/1639271021938.jpg)
+![../images/2/1639271021938.jpg](../images/2/1639271021938.jpg)
 
 作者固定FPR全是2.0是因为将此时可使F1值达到最高。上图可见使用BiGRU性能最好。
 
 3. 捕获越多的语义信息，系统检测漏洞的性能越高：
 
-![./images/2/1639272562900.jpg](./images/2/1639272562900.jpg)
+![../images/2/1639272562900.jpg](../images/2/1639272562900.jpg)
 
 包含数据依赖和控制依赖的语义比仅包含数据依赖语义的模型，性能会更高。
 
 
 4. 跟现有漏洞检测工具的对比，目前该系统性能也是最高：
 
-![./images/2/1639273027915.jpg](./images/2/1639273027915.jpg)
+![../images/2/1639273027915.jpg](../images/2/1639273027915.jpg)
 
 
 #### 不足

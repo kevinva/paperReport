@@ -129,8 +129,14 @@ softmax distribution compared to those of a model trained without softmax temper
 we added an auxiliary value prediction task during training such that the last layer token representations before projecting to logits are also used in a small Transformer to classify whether the submission is correct.
 ```
 
-3. GOLD(hoho_todo)
-(to be continue...)
+3. GOLD
+
+每个问题可以有多种解法，因为有不同的算法选择、实现方式等。那么每个问题描述就会对应多个解法。使用标准的最大似然估计去最小化损失函数是通过赋予每个解法不同的权重（类似于recall），而本文希望模型尽可能只生成一个正确解法（类似于precision），于是求loss导数采用了一种offine RL算法（GOLD: [Text Generation by Learning from Demonstrations](https://arxiv.org/abs/2009.07839)），其求导如下：
+
+$$ \triangledown \pounds_{GOLD}(\theta ) = -\sum_{s \epsilon\quad Solution\quad tokens}^{} P_\theta (s) \triangledown log P_\theta (s) $$
+其中$\theta$是模型参数，$logP_\theta(s)$是标准的最大似然估计，$P_\theta(s)$赋予一个权重，让模型学习似然值高的tokens，而忽略其他tokens，这样模型就会更加关注与精确率而不是召回率，增加只找到一个精确解的概率。
+同时，为了降低训练的稳定性，对$P_\theta(s)$作如下限制：
+$(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
 ### 研究结论
 

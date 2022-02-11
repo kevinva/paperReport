@@ -17,7 +17,7 @@
 
 * AT-LSTM(Attention-based with LSTM)
 
-![./images/7/1643640996581.jpg](./images/7/1643640996581.jpg)
+![../images/7/1643640996581.jpg](../images/7/1643640996581.jpg)
 
 以下列出技术注意力向量的方法：
 
@@ -50,7 +50,7 @@ $$y = softmax(W_sh^* + b_s)$$
 
 * ATAE-LSTM(Attention-based LSTM with Aspect Embedding)
 
-![./iamges/7/1643643408987.jpg](./images/7/1643643408987.jpg)
+![../iamges/7/1643643408987.jpg](../images/7/1643643408987.jpg)
 
 类似于AT-LSTM，但输入向量为方面词嵌入和词陷入的拼接。
 
@@ -68,11 +68,11 @@ $$loss = -\sum_{i}^{} \sum_{j}^{} y_i^jlogy_i^j + \lambda \left\|\theta  \right\
 
 * 准确度对比：
 
-![./images/7/WechatIMG70.jpeg](./images/7/WechatIMG70.jpeg)
+![../images/7/WechatIMG70.jpeg](../images/7/WechatIMG70.jpeg)
 
 * 注意力可视化：句子的特定方面对句子中各个单词的关注程度：
 
-![./images/7/WechatIMG71.jpeg](./images/7/WechatIMG71.jpeg)
+![../images/7/WechatIMG71.jpeg](../images/7/WechatIMG71.jpeg)
 
 ### 附
 
