@@ -84,13 +84,35 @@ decoder使用标准的交叉熵损失预测下一个token。
 
 encoder输入为问题的自然语言描述，而解题的代码用于decoder。
 
-另外，本文还使用了以下技术作为改进：
+另外，本文还使用了以下一些技巧：
 
-1. Tempering（hoho_todo）:
+1. Tempering:
 ```
 Tempering, introduced by Dabre and Fujita (2020)([ Softmax tempering for training neural machine translation models.](https://arxiv.org/pdf/2009.09372.pdf)), is a regularization technique that makes the token probability distribution artificially smoother or sharper at training time by dividing
-the output logits of a model by a scalar temperature 푇 before the softmax layer
+the output logits of a model by a scalar temperature  before the softmax layer
 ```
+softmax tempering旨在解决NMT模型过拟合问题，因为 softmax分布很快接近黄金标签分布。
+
+旧的计算交叉熵损失的方法：
+
+$P_i = P(Y_i | Y_{<i}, X) = softmax(D_i) $
+$loss_i = -\left< log(P_i, L_i) \right> \cdot T$，其中$\left<.,.\right>$为点积运算
+
+softmax tempering计算方法：
+
+$P^{temp}_i = softmax(D_i / T)$
+$loss^{temp}_i = -\left< log(P^{temp}_i, L_i) \right> \cdot T$
+
+其中$D_i$为decoder第i个位置的输出，$L_i$为对应标签的one-hot向量。
+
+当T大于1.0时，softmax输出的概率会更加平滑（smoother probability distribution），分布越平滑越均匀，熵就越高，因此预测时就有更多的不确定性。
+
+```
+Because loss is to be minimized, back-propagation will force the model to generate logits to counter the smoothing effect of temperature. During decoding with a model trained in this way, the temperature coefficient is not used and the logits will be such that they yield a sharper
+softmax distribution compared to those of a model trained without softmax tempering
+```
+
+(关于logits的理解：深度学习中经常出现logits，应该是表示进入softmax之前神经层的输出)
 
 2. Value conditioning & prediction
 
@@ -100,13 +122,12 @@ the output logits of a model by a scalar temperature 푇 before the softmax laye
 
 ![../images/9/1644500206736.jpg](../images/9/1644500206736.jpg)
 
-那么，在采样阶段，模型就总会采样到正确的sample了。
+然后在采样阶段，solution都填“正确”，模型就会采样到正确的sample了。
 
 而在Value prediction阶段，会加入一个辅助的预测任务（训练中才有），以便在transformer中的最后一层输出也可以用来区分这个代码提交的正确与否：
 ```
 we added an auxiliary value prediction task during training such that the last layer token representations before projecting to logits are also used in a small Transformer to classify whether the submission is correct.
 ```
-
 
 3. GOLD(hoho_todo)
 (to be continue...)
