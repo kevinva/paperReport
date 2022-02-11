@@ -37,7 +37,8 @@
 
 ### 研究方法
 
-* 数据集构建:CodeContests
+#### 数据集构建:CodeContests
+
 1. 数据结构包含：
 1.1 题目难度等级
 1.2 解题方法归类标签，如"greedy"、"dp"
@@ -49,7 +50,7 @@
 
 2. 为了防止数据“泄漏”（将训练集用于模型测试），本文对整个数据作了如下划分：所有训练集都在GitHub提交的日期2021/07/14或其之前；验证集的提交在2021/07/15至2021/09/20期间；测试集的提交2021/09/21之后
 
-* 模型架构
+#### 模型架构
 
 1. 基于seq2seq架构，对条件概率建模$p(Y | X)$，其中X为编程问题的描述（encoder的输入），Y为自回归的输出一个个代码token(decoder的输出)。
 
@@ -66,7 +67,7 @@
 
 4. tokenize：使用SentencePiece tokenizer（hoho_todo）方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
 
-* Pre-training
+#### Pre-training
 
 使用GitHub的代码进行预训练。
 
@@ -75,7 +76,7 @@ decoder使用标准的交叉熵损失预测下一个token
 
 将GitHub代码文件均匀切分为两部分，前半部分作为encoder的输入，后半部分用于decoder
 
-* Fine-tuning
+#### Fine-tuning
 
 使用自身CodeContests数据进行模型微调。
 
@@ -144,7 +145,7 @@ $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 ### 启示
 
 1. multi-query attention对transformer计算性能的影响
-2.  
+
 
 
 ### 附：
