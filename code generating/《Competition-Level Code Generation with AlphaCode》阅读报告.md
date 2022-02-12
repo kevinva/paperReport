@@ -63,7 +63,7 @@
 
 2. 使用JAX、Haiku工具建立模型
 
-3. 使用multi-query attention（hoho_todo）：每个attention block使用全量的query heads，而key和value heads只使用一部分（共享key和value heads），这样可以减少内存和cache的使用，提高sampling的效率。
+3. 使用multi-query attention：每个attention block使用全量的query heads，而key和value heads只使用一部分（共享key和value heads），这样可以减少内存和cache的使用，提高sampling的效率。
 
 4. tokenize：使用SentencePiece tokenizer（hoho_todo）方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
 
@@ -139,13 +139,68 @@ $$ \triangledown \pounds_{GOLD}(\theta ) = -\sum_{s \epsilon\quad Solution\quad 
 同时，为了降低训练的稳定性，对$P_\theta(s)$作如下限制：
 $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
+
+#### 大规模采样
+
+本文使用另一个单独的模型负责解题solution的采样。它会生成Python和C++语言的样本各一半；随机组合题目的tag和ratings，以使生成的样本多样化；使用相对高的softmax tempering参数
+
+#### 过滤
+
+只挑选通过题目中example test的的sample，最终将去掉大概99%的生成sample
+
+#### 聚类
+
+过滤后可能还剩余很多候选解题样本（对每一个问题）。本文另外训练一个用来生成测试输入的模型，使用题目的example test、hidden test和生成test作为训练数据，然后根据模型生成测试输入的表现，对剩下的sample作聚类。
+
+最后从最大的聚类开始挑选样本，每个类只选1个样本，直到最小的聚类，然后第二轮开始只从最大（或较大）的聚类选sample，直到sample数量达到10个。
+
 ### 研究结论
+
+1. 在解决10个编程问题中，本模型平均达到54.3%的排名：
+
+![../images/9/微信图片_20220212175015.png](../images/9/微信图片_20220212175015.png)
+
+
+2. 解题率
+
+* pass@k:  k个sample都通过题目hidden test的，即表示该题正确解决。这个标准表示每k个sample正确解题比例，可以用来衡量模型寻找可解sample的性能
+
+* 10@k: 每k个sample中有10个都能正确解题的解题数量占比。
+
+本模型解题率统计：
+
+![../images/9/微信图片_20220212180128.png](../images/9/微信图片_20220212180128.png)
+
+解题率与总的sample数量呈线性对数关系，而且模型规模越大，曲线斜率越大：
+
+![../images/9/微信图片_20220212180514.png](../images/9/微信图片_20220212180514.png)
+
+
+3. 模型架构的变化的影响
+
+由于解题率取决于sampling数量的大小，所以sampling的速度很重要，以下衡量不同的模型架构对sampling的速度的影响：
+
+![../images/9/微信图片_20220212181037.png](../images/9/微信图片_20220212181037.png)
+
+其中Std MH attention表示使用标准的多头注意力。
+
+4. 预训练数据的影响
+
+![../images/9/微信图片_20220212181238.png](../images/9/微信图片_20220212181238.png)
+
+5. 模型各种提升性能的技巧影响
+
+![../images/9/微信图片_20220212181403.png](../images/9/微信图片_20220212181403.png)
+
+6. 使用sample过滤和聚类的影响：
+
+![../images/9/微信图片_20220212181604.png](../images/9/微信图片_20220212181604.png)
 
 
 ### 启示
 
 1. multi-query attention对transformer计算性能的影响
-
+2. 解题率跟样本数呈线性对数关系，生成样本越多，解题率就可以越高，所以sampling的速度很重要（所谓大力出奇迹）。
 
 
 ### 附：
