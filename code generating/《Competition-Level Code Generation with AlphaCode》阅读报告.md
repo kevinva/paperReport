@@ -167,6 +167,18 @@ $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
 * 10@k: 每k个sample中有10个都能正确解题的解题数量占比。
 
+具体计算n@k流程如下：
+
+![../images/9/微信图片_20220213224059.png](../images/9/微信图片_20220213224059.png)
+
+简要说明：
+2.1 在全集K个samples中取不重复的S个子集，每个子集含k个samples
+2.2 对每个子集S，进行如下操作：
+    2.2.1 当sample通过题目的example test时就作为有效提交，最多提交n个
+    2.2.2 提交的samples中，当有一个sample能满足题解，则表示该题得解，统计得解的题目数量 #solved
+2.3 求#solved / #S 得对于每个单个题目的平均n@k
+2.4 除以所有题目的数量，得总的平均n@k
+
 本模型解题率统计：
 
 ![../images/9/微信图片_20220212180128.png](../images/9/微信图片_20220212180128.png)
@@ -201,6 +213,19 @@ $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
 1. multi-query attention对transformer计算性能的影响
 2. 解题率跟样本数呈线性对数关系，生成样本越多，解题率就可以越高，所以sampling的速度很重要（所谓大力出奇迹）。
+3. 对题目自然语言描述的精简对性能提升极大：
+![../images/9/微信图片_20220213225525.png](../images/9/微信图片_20220213225525.png)
+
+精简前后的题目对比：
+
+![../images/9/微信图片_20220213225913.png](../images/9/微信图片_20220213225913.png)
+
+4. 解题正确率十分依赖于题目的自然语言描述
+![../images/9/微信图片_20220213225216.png](../images/9/微信图片_20220213225216.png)
+
+```
+the model acutally does better with more language-heavy descriptions
+```
 
 
 ### 附：
