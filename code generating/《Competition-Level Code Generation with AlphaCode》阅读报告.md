@@ -74,7 +74,7 @@
 encoder使用masked language modeling
 decoder使用标准的交叉熵损失预测下一个token
 
-在GitHub抓取代码文件，文件中标记一个所谓的pivot point，将代码文件匀切分为两部分，前半部分作为encoder的输入，decoder用于重建后半部分，以自回归方式，一个个代码token预测，直到结束标记。
+从GitHub抓取代码文件，文件中标记一个所谓的pivot point，将代码文件匀切分为两部分，前半部分作为encoder的输入，decoder用于重建后半部分，以自回归方式，一个个代码token预测，直到结束标记。
 
 本文还使用masked launguage modeling技术作为第二个loss，目标是恢复被mask掉的那个token。
 
@@ -149,7 +149,7 @@ $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
 #### 大规模采样（测试阶段）
 
-训练一个transformer（其实就是pre-train跟fine-tune那个transformer）负责解题solution的采样。将问题描述与问题的各种元数据（如问题tag、rating等）作为输入，代码sample作为输出。每个问题生成100万个samples。
+训练一个transformer（其实就是pre-train和fine-tune那个transformer）负责解题solution的采样。将问题描述与问题的各种元数据（如问题tag、rating等）作为输入，代码sample作为输出。每个问题生成100万个samples。
 为使生成的样本多样化，使用如下技巧：
 （1）生成Python和C++语言的样本各一半；
 （2）随机组合题目的tag和ratings；
@@ -239,7 +239,7 @@ Semantically equivalent programs could be detected if we had additional test inp
 
 1. multi-query attention对transformer计算性能的影响
 2. 解题率跟样本数呈线性对数关系，生成样本越多，解题率就可以越高，所以sampling的速度很重要（所谓大力出奇迹）。
-3. 对题目自然语言描述的精简对性能提升极大：
+3. 题目自然语言描述的精简性对性能提升极大：
 ![../images/9/微信图片_20220213225525.png](../images/9/微信图片_20220213225525.png)
 
 精简前后的题目对比：
@@ -252,6 +252,7 @@ Semantically equivalent programs could be detected if we had additional test inp
 ```
 the model acutally does better with more language-heavy descriptions
 ```
+5. 模型双loss的应用（标准交叉熵和masked language modeling的loss）
 
 
 ### 附：
