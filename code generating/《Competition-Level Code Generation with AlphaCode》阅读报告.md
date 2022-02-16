@@ -37,7 +37,7 @@
 
 ### 研究方法
 
-#### 数据集构建:CodeContests
+#### 数据集构建: CodeContests
 
 1. 数据结构包含：
 1.1 题目难度等级
@@ -50,9 +50,9 @@
 
 2. 为了防止数据“泄漏”（将训练集用于模型测试），本文对整个数据作了如下划分：所有训练集都在GitHub提交的日期2021/07/14或其之前；验证集的提交在2021/07/15至2021/09/20期间；测试集的提交2021/09/21之后
 
-#### 模型架构
+#### 模型概述
 
-1. 基于seq2seq架构，对条件概率建模$p(Y | X)$，其中X为编程问题的描述（encoder的输入），Y为自回归的输出一个个代码token(decoder的输出)。
+1. 总体基于transformer的seq2seq架构，对条件概率建模$p(Y | X)$，其中X为编程问题的描述（encoder的输入），Y为自回归的输出一个个代码token(decoder的输出)。
 
     ![../images/9/1644499579099.jpg](../images/9/1644499579099.jpg)
 
@@ -67,16 +67,23 @@
 
 4. tokenize：使用SentencePiece tokenizer（hoho_todo）方法，使用GitHub和自身CodeContest数据集一共8000个token，encoder和decoder都使用相同的tokenizer
 
-#### Pre-training
+#### Pre-training（训练阶段）
 
 使用GitHub的代码进行预训练。
 
 encoder使用masked language modeling
 decoder使用标准的交叉熵损失预测下一个token
 
-将GitHub代码文件均匀切分为两部分，前半部分作为encoder的输入，后半部分用于decoder
+在GitHub抓取代码文件，文件中标记一个所谓的pivot point，将代码文件匀切分为两部分，前半部分作为encoder的输入，decoder用于重建后半部分，以自回归方式，一个个代码token预测，直到结束标记。
 
-#### Fine-tuning
+本文还使用masked launguage modeling技术作为第二个loss，目标是恢复被mask掉的那个token。
+
+架构如下：
+
+![../images/9/640a.webp](../images/9/640a.webp)
+(by [https://www.youtube.com/watch?v=YjsoN5aJChA](https://www.youtube.com/watch?v=YjsoN5aJChA))
+
+#### Fine-tuning（训练阶段）
 
 使用自身CodeContests数据进行模型微调。
 
@@ -140,19 +147,37 @@ $$ \triangledown \pounds_{GOLD}(\theta ) = -\sum_{s \epsilon\quad Solution\quad 
 $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
 
-#### 大规模采样
+#### 大规模采样（测试阶段）
 
-本文使用另一个单独的模型负责解题solution的采样。它会生成Python和C++语言的样本各一半；随机组合题目的tag和ratings，以使生成的样本多样化；使用相对高的softmax tempering参数
+训练一个transformer（其实就是pre-train跟fine-tune那个transformer）负责解题solution的采样。将问题描述与问题的各种元数据（如问题tag、rating等）作为输入，代码sample作为输出。每个问题生成100万个samples。
+为使生成的样本多样化，使用如下技巧：
+（1）生成Python和C++语言的样本各一半；
+（2）随机组合题目的tag和ratings；
+（3）使用相对高的softmax tempering参数
 
-#### 过滤
 
-只挑选通过题目中example test的的sample，最终将去掉大概99%的生成sample
+#### 过滤（测试阶段）
 
-#### 聚类
+从大规模采样的samples中，只挑选通过题目中example test的的sample，最终将过滤掉大概99%的samples
 
-过滤后可能还剩余很多候选解题样本（对每一个问题）。本文另外训练一个用来生成测试输入的模型，使用题目的example test、hidden test和生成test作为训练数据，然后根据模型生成测试输入的表现，对剩下的sample作聚类。
+#### 聚类（测试阶段）
 
-最后从最大的聚类开始挑选样本，每个类只选1个样本，直到最小的聚类，然后第二轮开始只从最大（或较大）的聚类选sample，直到sample数量达到10个。
+首先，训练另一个transfomer（跟以上架构相同）用来生成测试输入，使用问题的描述（含其中的example test、hidden test和生成的test）训练数据，输出与问题相关的测试输入（test input）。
+
+然后，对以上过滤剩下的samples（约1000个），分别用transformer生成的测试输入验证测试输出，根据测试输出结果是否相似进行聚类，最后挑选出10个sample。
+
+相对随机抽样，这么做的好处是：对于语义相似的代码，通常输出相同的测试结果。按测试结果是否相似对这些语义相似的代码提交进行聚类，就可以避免提交相同解答的代码，可以大大节省提交验证的时间（这一步其实还在进行过滤，最终目标只要模型生成一个提交就足够了）。
+```
+Semantically equivalent programs could be detected if we had additional test inputs, by executing all remaining programs on these inputs and grouping programs that produce the same outputs together into clusters.We could then avoid repeatedly picking from the same clusters.
+```
+
+研究发现，以下挑选样本的方法使得研究结果最好：先从最大的聚类开始挑选样本，每个类只选1个样本，直到最小的聚类，然后第二轮开始只从最大（或较大）的聚类选sample，直到sample数量达到10个。
+
+验证时，如果这10个sample中有一个通过了所有的hidden test，那就算成功解决了这个编程问题。
+
+#### 测试总体流程如下图：
+![../images/9/640.webp](../images/9/640.webp)
+(by [https://www.youtube.com/watch?v=YjsoN5aJChA](https://www.youtube.com/watch?v=YjsoN5aJChA))
 
 ### 研究结论
 
@@ -209,6 +234,7 @@ $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 ![../images/9/微信图片_20220212181604.png](../images/9/微信图片_20220212181604.png)
 
 
+
 ### 启示
 
 1. multi-query attention对transformer计算性能的影响
@@ -230,12 +256,14 @@ the model acutally does better with more language-heavy descriptions
 
 ### 附：
 
+* 论文地址：
+[https://storage.googleapis.com/deepmind-media/AlphaCode/competition_level_code_generation_with_alphacode.pdf](https://storage.googleapis.com/deepmind-media/AlphaCode/competition_level_code_generation_with_alphacode.pdf)
+
+
 * 数据集：
-
 [https://github.com/deepmind/code_contests](https://github.com/deepmind/code_contests)
-
 [https://codeforces.com/](https://codeforces.com/)
 
-* 应用：
 
+* 应用：
 [https://alphacode.deepmind.com/](https://alphacode.deepmind.com/)
