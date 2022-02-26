@@ -52,6 +52,10 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 
 而在代码到文本的生成中，使用编码器-解码器框架，并使用CodeBERT初始化生成模型的编码器。
 
+CodeBERT示意图：
+
+![../images/8/1645841253814.jpg](../images/8/1645841253814.jpg)
+
 
 ### 研究结论
 
@@ -100,6 +104,12 @@ $$\underset{\theta }{min}L_{MLML}(\theta ) + L_{RTD}(\theta )$$
 ![../images/8/1643898764090.jpg](../images/8/1643898764090.jpg)
 
 说明CodeBERT能够更好地推广到其他编程语言。但模型的效果略低于code2seq，作者认为原因可能是code2seq融入了抽象语法树AST中的表示，而CodeBERT仅将原始代码作为输入，所以CodeBERT在组合AST的语义上还有待研究。
+
+### 启示
+
+* 将编程语言当做序列输入，预训练Transformer encoder
+* 该方法仅仅把代码当做自然语言一样的序列处理，忽视代码包含的语法结构和逻辑结构
+* 该模型只预训练encoder，生成任务上效果一般
 
 ### 附：
 
