@@ -188,7 +188,7 @@ Semantically equivalent programs could be detected if we had additional test inp
 
 2. 解题率
 
-* pass@k:  k个sample都通过题目hidden test的，即表示该题正确解决。这个标准表示每k个sample正确解题比例，可以用来衡量模型寻找可解sample的性能
+* pass@k:  k个sample都通过题目hidden test的，即表示该题正确解决。这个标准表示每k个sample正确解题比例，可以用来衡量模型寻找可解sample的性能（每k个sample中pass的比率）
 
 * 10@k: 每k个sample中有10个都能正确解题的解题数量占比。
 
@@ -253,6 +253,8 @@ Semantically equivalent programs could be detected if we had additional test inp
 the model acutally does better with more language-heavy descriptions
 ```
 5. 模型双loss的应用（标准交叉熵和masked language modeling的loss）
+
+6. 没用按照不同的开源许可证对代码区分对待，用那些明确不允许用于商业用途的代码训练模型，是否涉嫌侵权？模型的输出代码与原训练代码的相似性判断很关键！
 
 
 ### 附：
