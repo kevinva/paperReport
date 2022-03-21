@@ -55,9 +55,9 @@ $$
 
 由此来减少估计的偏差。
 
-而且，去除对时间的依赖（to do...）
+而且，为了去除对时间的依赖，将$h_k$改写为$h_\beta, \beta \in [0, 1)$表示在每个时间步的“probability of survival”（hoho: what????），它可以是折扣因子$\gamma$，或终结概率。
 
-这个概率$h_k(a|x, X_k)$通过cross-entropy loss进行训练，大概思想为：输入未来状态$X_k$和当前状态$X_0$的向量到神经网络，输出行为的概率，然后和真实的动作$A_0$作cross-entropy
+这个概率$h_\beta(a|x, X_k)$通过cross-entropy loss进行训练，大概思想为：输入未来状态$X_k$和当前状态$X_0$的向量到神经网络，输出行为的概率，然后和真实的动作$A_0$作cross-entropy。
 
 ### 研究结论
 
