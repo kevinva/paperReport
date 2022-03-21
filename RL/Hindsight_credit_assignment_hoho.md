@@ -9,13 +9,13 @@
 3.跟时间步相关性强：离当前越近的行为，获得的奖励或惩罚影响就越大？ 
 4.估计这个行为的价值只使用了状态-行为序列中发生的这个行为，而我们希望要用上所有相关的行为。
 
-目标：We propose to learn estimators that explicitly consider the credit assignment question: "given an outcome, how relevant were past decisions?"
+目标：We propose to learn estimators that explicitly consider the credit assignment question: "given an outcome, how relevant were past decisions?"，智能体得到实质性奖励后，再分配到经历过的每一个（st, at）上
 
 ### 研究方法
 
 * 引入基于状态的后知分布（State-conditional hindsight distributions）:
 
-$h_k(a|x, \pi, y)=P_{\iota \sim \tau}(A_0 = a | X_k = y)$
+$h_k(a|x, \pi, y)=P_{\iota \sim \tau(x, \pi)}(A_0 = a | X_k = y)$
 
 表示当状态-行为序列基于策略$\pi$时，第k个时间步状态为y而序列中第一个行为为a的概率。它可以表示行为a跟未来状态y的相关性：
 不相关，则策略依旧为$\pi(a|x)$
@@ -23,13 +23,25 @@ $h_k(a|x, \pi, y)=P_{\iota \sim \tau}(A_0 = a | X_k = y)$
 如果a不利于y的发生，则$h_k(a|x, \pi, y) < \pi(a|x)$
 那么，基于贝叶斯定理，有：
 $$
-h_k(a|x, \pi, y) \\= P_{\iota \sim \tau(x, a, \pi)}(A_0 = a | X_k = y) \\=\frac{P_{\iota \sim \tau(x, a, \pi)}(A_0=a, X_k=y)}{\sum_{a}P_{\iota \sim \tau(x, a, \pi)}(X_k=y)} \\ = \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x) P_{\iota \sim \tau(x, a, \pi)}(A_0=a|X_0=x)}{\sum_{a}P_{\iota \sim \tau(x, a, \pi)}(X_k=y)} \\= \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x) \pi(a|x)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
+h_k(a|x, \pi, y) 
+\\= P_{\iota \sim \tau(x, \pi)}(A_0 = a | X_k = y) 
+\\=P(A_0=a|X_k=y, X_0=x, \pi) 
+\\=\frac{P(A_0=a, X_k=y, X_0=x, \pi)}{P(X_k=y, X_0=x, \pi)} 
+\\ = \frac{P(X_k=y | A_0 = a, X_0=x, \pi) P(A_0=a,X_0=x,\pi)}{P(X_k=y, X_0=x, \pi)} 
+\\ = \frac{P(X_k=y | A_0 = a, X_0=x, \pi) P(A_0=a|X_0=x,\pi)P(X_0=x, \pi)}{P(X_k=y, X_0=x, \pi)} 
+\\ = \frac{P(X_k=y | A_0 = a, X_0=x, \pi) P(A_0=a|X_0=x,\pi)}{P(X_k=y|X_0=x, \pi)} 
+\\= \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y) \pi(a|x)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
 $$
 
 所以：
 $$
-\frac{h_k(a|x, \pi, y)}{\pi(a|x)} = \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
+\frac{h_k(a|x, \pi, y)}{\pi(a|x)} = \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
 $$
+
+
+那么，这个比值就可以量化行为a与状态$X_k$的相关度:
+比值为1时，表示当前行为$A_0=a$对状态转移到$X_k=y$不相关;
+比值越大，表示当前行为$A_0=a$对状态转移到$X_k=y$贡献越大
 
 更新后的价值函数：
 
@@ -39,9 +51,13 @@ $$
 
 ![../images/12/企业微信截图_303ac151-d980-46e9-9724-0665dfa26fb5.png](../images/12/企业微信截图_303ac151-d980-46e9-9724-0665dfa26fb5.png)
 
-那么，这个比值就可以量化行为a与状态$X_k$的相关度，如比值为1时表示不相关，表示回报$R_k$不参与行为a价值估计中。
+使用这个比值对累积奖励进行加权，则重要性越大的行为，得到的奖励越被重视。
 
 由此来减少估计的偏差。
+
+而且，去除对时间的依赖（to do...）
+
+这个概率$h_k(a|x, X_k)$通过cross-entropy loss进行训练，大概思想为：输入未来状态$X_k$和当前状态$X_0$的向量到神经网络，输出行为的概率，然后和真实的动作$A_0$作cross-entropy
 
 ### 研究结论
 
