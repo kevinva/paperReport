@@ -2,15 +2,46 @@
 
 ### 研究现状
 
-1.
-2.
-3.
-4.
+本文主要考虑的问题是：如何在状态x下选择一个影响未来的行为a?
+目前的问题主要有：
+1.估计值函数的方式只是简单的求回报的平均，这种蒙特卡洛式的估计很低效；
+2.基于马尔科夫假设的估计有偏差：状态只是部分可观测
+3.跟时间步相关性强：离当前越近的行为，获得的奖励或惩罚影响就越大？ 
+4.估计这个行为的价值只使用了状态-行为序列中发生的这个行为，而我们希望要用上所有相关的行为。
 
 目标：We propose to learn estimators that explicitly consider the credit assignment question: "given an outcome, how relevant were past decisions?"
 
 ### 研究方法
 
+* 引入基于状态的后知分布（State-conditional hindsight distributions）:
+
+$h_k(a|x, \pi, y)=P_{\iota \sim \tau}(A_0 = a | X_k = y)$
+
+表示当状态-行为序列基于策略$\pi$时，第k个时间步状态为y而序列中第一个行为为a的概率。它可以表示行为a跟未来状态y的相关性：
+不相关，则策略依旧为$\pi(a|x)$
+如果a导致y发生，则$h_k(a|x, \pi, y) > \pi(a|x)$
+如果a不利于y的发生，则$h_k(a|x, \pi, y) < \pi(a|x)$
+那么，基于贝叶斯定理，有：
+$$
+h_k(a|x, \pi, y) \\= P_{\iota \sim \tau(x, a, \pi)}(A_0 = a | X_k = y) \\=\frac{P_{\iota \sim \tau(x, a, \pi)}(A_0=a, X_k=y)}{\sum_{a}P_{\iota \sim \tau(x, a, \pi)}(X_k=y)} \\ = \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x) P_{\iota \sim \tau(x, a, \pi)}(A_0=a|X_0=x)}{\sum_{a}P_{\iota \sim \tau(x, a, \pi)}(X_k=y)} \\= \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x) \pi(a|x)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
+$$
+
+所以：
+$$
+\frac{h_k(a|x, \pi, y)}{\pi(a|x)} = \frac{P_{\iota \sim \tau(x, a, \pi)}(X_k=y | A_0 = a, X_0=x)}{P_{\iota \sim \tau(x, \pi)}(X_k=y)}
+$$
+
+更新后的价值函数：
+
+![../images/12/企业微信截图_39420ad9-1110-4f7c-b2b2-04f4802e27fe.png](../images/12/企业微信截图_39420ad9-1110-4f7c-b2b2-04f4802e27fe.png)
+
+优势函数：
+
+![../images/12/企业微信截图_303ac151-d980-46e9-9724-0665dfa26fb5.png](../images/12/企业微信截图_303ac151-d980-46e9-9724-0665dfa26fb5.png)
+
+那么，这个比值就可以量化行为a与状态$X_k$的相关度，如比值为1时表示不相关，表示回报$R_k$不参与行为a价值估计中。
+
+由此来减少估计的偏差。
 
 ### 研究结论
 
@@ -24,8 +55,10 @@
 
 * off-policy
 * on-policy
+* trajectory: 轨迹，即一段状态-动作序列
 * advantage function: 在状态s下，某动作a相对于平均而言的优势：
-
+$A^\pi(s, a)=Q^\pi(s, a) - V^\pi(s)$
 * actor-critic algorithm
 * aliased chain
-* norsy reward
+* noisy reward
+* policy gradient
