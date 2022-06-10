@@ -104,12 +104,12 @@ softmax tempering旨在解决NMT模型过拟合问题，因为 softmax分布很�
 旧的计算交叉熵损失的方法：
 
 $P_i = P(Y_i | Y_{<i}, X) = softmax(D_i) $
-$loss_i = -\left< log(P_i, L_i) \right> $，其中$\left<.,.\right>$为点积运算
+$loss_i = -\left< log(P_i), L_i \right> $，其中$\left<.,.\right>$为点积运算
 
 softmax tempering计算方法：
 
 $P^{temp}_i = softmax(D_i / T)$
-$loss^{temp}_i = -\left< log(P^{temp}_i, L_i) \right> \cdot T$
+$loss^{temp}_i = -\left< log(P^{temp}_i), L_i \right> \cdot T$
 
 其中$D_i$为decoder第i个位置的输出，$L_i$为对应标签的one-hot向量。
 
