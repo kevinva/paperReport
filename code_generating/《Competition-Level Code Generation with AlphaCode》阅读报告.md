@@ -146,6 +146,9 @@ $$ \triangledown \pounds_{GOLD}(\theta ) = -\sum_{s \epsilon\quad Solution\quad 
 同时，为了降低训练的稳定性，对$P_\theta(s)$作如下限制：
 $(P_\theta(s)^\alpha, \beta), \alpha=\frac{1}{2}, \beta=0.05$
 
+（这里借鉴了强化学习中策略梯度方法的Loss:
+ $\triangledown J(\theta) = \mathbb{E}[Q(s,a)\triangledown \pi_\theta(s, a)]$）
+
 
 #### 大规模采样（测试阶段）
 
